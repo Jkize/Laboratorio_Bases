@@ -8,6 +8,7 @@ package Estructura;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import javax.xml.transform.Source;
 
 /**
  *
@@ -15,12 +16,10 @@ import java.io.RandomAccessFile;
  */
 public class Arbol_Archivo_IdString  {
 
-    private RandomAccessFile arbol;
-    private RandomAccessFile archivo;
+    private RandomAccessFile arbol; 
  
     public Arbol_Archivo_IdString(String archivo_dato) throws FileNotFoundException {
-        arbol = new RandomAccessFile("arbol" + archivo_dato, "rw");
-        archivo = new RandomAccessFile(archivo_dato, "rw");
+        arbol = new RandomAccessFile("arbol" + archivo_dato, "rw"); 
 
     } 
 
@@ -30,7 +29,7 @@ public class Arbol_Archivo_IdString  {
      * @return True si se añadio correctamento, de lo contrario false.
      * @throws IOException 
      */
-    public boolean añadir (String id) throws IOException {
+    public boolean añadir (String id, int length) throws IOException {
         arbol.seek(0); 
         if (arbol.length() == 0) {
             arbol.writeUTF(id);            
@@ -48,7 +47,7 @@ public class Arbol_Archivo_IdString  {
             arbol.writeUTF(id);
             arbol.writeInt(-1);
             arbol.writeInt(-1);
-            arbol.writeInt((int) archivo.length());
+            arbol.writeInt((int) length);
         }
         return true;
     }
@@ -103,7 +102,7 @@ public class Arbol_Archivo_IdString  {
      * 
      * @throws IOException 
      */
-    public long buscar(String id) throws IOException{
+    public long getPosArchivo(String id) throws IOException{
         arbol.seek(0);
         return search(id);
     }
@@ -158,6 +157,5 @@ public class Arbol_Archivo_IdString  {
             }
         }
 
-    }
-
+    } 
 }

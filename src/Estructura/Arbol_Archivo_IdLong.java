@@ -15,12 +15,10 @@ import java.io.RandomAccessFile;
  */
 public class Arbol_Archivo_IdLong  {
 
-    private RandomAccessFile arbol;
-    private RandomAccessFile archivo;
+    private RandomAccessFile arbol; 
 
     public Arbol_Archivo_IdLong(String archivo_dato) throws FileNotFoundException {
-        arbol = new RandomAccessFile("arbol" + archivo_dato, "rw");
-        archivo = new RandomAccessFile(archivo_dato, "rw");
+        arbol = new RandomAccessFile("arbol" + archivo_dato, "rw"); 
 
     } 
 
@@ -30,7 +28,7 @@ public class Arbol_Archivo_IdLong  {
      * @return True si se añadio correctamento, de lo contrario false.
      * @throws IOException 
      */
-    public boolean añadir (long id) throws IOException {
+    public boolean añadir (long id, int length) throws IOException {
         arbol.seek(0); 
         if (arbol.length() == 0) {
             arbol.writeLong(id);            
@@ -48,7 +46,7 @@ public class Arbol_Archivo_IdLong  {
             arbol.writeLong(id);
             arbol.writeInt(-1);
             arbol.writeInt(-1);
-            arbol.writeInt((int) archivo.length());
+            arbol.writeInt(length);
         }
         return true;
     }
@@ -102,7 +100,7 @@ public class Arbol_Archivo_IdLong  {
      * 
      * @throws IOException 
      */
-    public long buscar(long id) throws IOException{
+    public long getPosArchivo(long id) throws IOException{
         arbol.seek(0);
         return search(id);
     }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package DAO;
+package modelo.DAO;
 
 import Estructura.Arbol_Archivo_IdLong;
 import java.io.FileNotFoundException;
@@ -36,7 +36,7 @@ public class DAO_Cliente {
     public boolean añadir(Cliente cliente) throws IOException {
         //PRIMORDIAL LA LINEA DE ABAJO, INDICA QUE DEBE REGISTRAR AL FINAL DEL ARCHIVO CLIENTE.
         archivo.seek(archivo.length());
-        if (arbol.añadir(cliente.getIdPersona())) {
+        if (arbol.añadir(cliente.getIdPersona(), (int)archivo.length() )) {
             archivo.writeLong(cliente.getIdPersona());
             archivo.writeUTF(cliente.getNombre());
             archivo.writeUTF(cliente.getDireccion());
@@ -54,11 +54,11 @@ public class DAO_Cliente {
      * @throws IOException lanzará un error si no esta dentro de la posición.
      */
     public Cliente buscarCliente(long id) throws IOException {
-        int pos = (int) arbol.buscar(id);
+        int pos = (int) arbol.getPosArchivo(id);
         Cliente cliente = new Cliente();
         archivo.seek(pos);
         cliente.setIdPersona(archivo.readLong());
-        cliente.setNombre(archivo.readUTF());
+        cliente.setNombre(archivo.readUTF());        
         cliente.setDireccion(archivo.readUTF());
         return cliente;
 
@@ -75,7 +75,7 @@ public class DAO_Cliente {
     public boolean actualizarCliente(Cliente cliente) throws IOException {
 
         try {
-            int pos = (int) arbol.buscar(cliente.getIdPersona());
+            int pos = (int) arbol.getPosArchivo(cliente.getIdPersona());
             archivo.seek(pos);
             archivo.writeLong(cliente.getIdPersona());
             archivo.writeUTF(cliente.getNombre());

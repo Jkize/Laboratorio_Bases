@@ -10,19 +10,20 @@ package modelo;
  * @author Jhoan Saavedra
  */
 public class Empleado extends Persona{
-    private String contraseña;
+    private String contrasena;
     private String cargo;
     private String idcaja;
 
     public Empleado() {
     }
 
-    public String getContraseña() {
-        return contraseña;
+    public String getContrasena() {
+        return contrasena;
     }
 
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+    public void setContrasena(String contrasena) {
+         this.contrasena=conver(contrasena, 7);
+     
     }
 
     public String getCargo() {
@@ -30,7 +31,7 @@ public class Empleado extends Persona{
     }
 
     public void setCargo(String cargo) {
-        this.cargo = cargo;
+        this.cargo = conver(cargo, 2);
     }
 
     public String getIdcaja() {
@@ -38,7 +39,7 @@ public class Empleado extends Persona{
     }
 
     public void setIdcaja(String idcaja) {
-        this.idcaja = idcaja;
+        this.idcaja =conver(idcaja,5);
     }
     
     

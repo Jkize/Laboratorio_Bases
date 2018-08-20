@@ -3,40 +3,33 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package DAO;
+package modelo.DAO;
 
 import Estructura.Arbol_Archivo_IdString;
 import java.io.FileNotFoundException;
 import java.io.RandomAccessFile;
-import modelo.Supermercado;
+import modelo.Detallado;
 
 /**
  *
  * @author PC02
  */
-public class DAO_Supermercado {
+public class DAO_Detallado {
     
     private RandomAccessFile archivo;
     private Arbol_Archivo_IdString arbol;
     
-    public DAO_Supermercado() throws FileNotFoundException {
-        archivo = new RandomAccessFile("supermercado", "rw");
-        arbol = new Arbol_Archivo_IdString("supermercado");
+    public DAO_Detallado() throws FileNotFoundException {
+        archivo = new RandomAccessFile("detallado", "rw");
+        arbol = new Arbol_Archivo_IdString("detallado");
     }
     
-    public Supermercado buscarSM(String id){
+    public Detallado buscarDetallado(int idVenta){
         return null;
     }
     
-    public boolean crearSM(Supermercado sup){
+    public boolean crearDetallado(Detallado detallado){
         return false;
     }
     
-    public boolean eliminarSM(String id){
-        return false;
-    }
-    
-    public boolean actualizarSM(Supermercado sup){
-        return false;
-    }
 }
