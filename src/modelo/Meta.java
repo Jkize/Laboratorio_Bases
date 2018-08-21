@@ -11,10 +11,19 @@ package modelo;
  */
 public class Meta {
     
+    private long codigoBarras;
     private String fechaMeta;
     private int cantMeta;
 
     public Meta() {
+    }
+
+    public long getCodigoBarras() {
+        return codigoBarras;
+    }
+
+    public void setCodigoBarras(long codigoBarras) {
+        this.codigoBarras = codigoBarras;
     }
 
     public String getFechaMeta() {

@@ -7,6 +7,7 @@ package modelo.DAO;
 
 import Estructura.Arbol_Archivo_IdString;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.RandomAccessFile;
 import modelo.Supermercado;
 
@@ -24,11 +25,24 @@ public class DAO_Supermercado {
         arbol = new Arbol_Archivo_IdString("supermercado");
     }
     
-    public Supermercado buscarSM(String id){
-        return null;
+    public Supermercado buscarSM(String id) throws IOException{
+        int pos = (int) arbol.getPosArchivo(id);
+        Supermercado sm = new Supermercado();
+        archivo.seek(pos);
+        sm.setIdSM(archivo.readUTF());
+        sm.setNombreSM(archivo.readUTF());
+        sm.setDireccionSM(archivo.readUTF());
+        return sm;
     }
     
-    public boolean crearSM(Supermercado sup){
+    public boolean crearSM(Supermercado sup) throws IOException{
+        archivo.seek(archivo.length());
+        if(arbol.añadir(sup.getIdSM(), (int)archivo.length())){
+            archivo.writeUTF(sup.getIdSM());
+            archivo.writeUTF(sup.getNombreSM());
+            archivo.writeUTF(sup.getDireccionSM());
+            return true;
+        }
         return false;
     }
     
@@ -36,7 +50,12 @@ public class DAO_Supermercado {
         return false;
     }
     
-    public boolean actualizarSM(Supermercado sup){
-        return false;
+    public boolean actualizarSM(Supermercado sup) throws IOException{
+        int pos = (int) arbol.getPosArchivo(sup.getIdSM());
+        archivo.writeUTF(sup.getIdSM());
+        archivo.writeUTF(sup.getNombreSM());
+        archivo.writeUTF(sup.getDireccionSM());
+        return true;
     }
+    
 }

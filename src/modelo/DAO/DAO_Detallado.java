@@ -7,6 +7,7 @@ package modelo.DAO;
 
 import Estructura.Arbol_Archivo_IdString;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.RandomAccessFile;
 import modelo.Detallado;
 
@@ -24,11 +25,24 @@ public class DAO_Detallado {
         arbol = new Arbol_Archivo_IdString("detallado");
     }
     
-    public Detallado buscarDetallado(int idVenta){
-        return null;
+    public Detallado buscarDetallado(String idVenta) throws IOException{
+        int pos = (int) arbol.getPosArchivo(idVenta);
+        Detallado detallado = new Detallado();
+        archivo.seek(pos);
+        detallado.setIdVenta(archivo.readUTF());
+        detallado.setCodigoBarras(archivo.readLong());
+        detallado.setCantidadProd(archivo.readInt());
+        return detallado;
     }
     
-    public boolean crearDetallado(Detallado detallado){
+    public boolean crearDetallado(Detallado detallado) throws IOException{
+        archivo.seek(archivo.length());
+        if(arbol.añadir(detallado.getIdVenta(), (int)archivo.length())){
+            archivo.writeUTF(detallado.getIdVenta());
+            archivo.writeLong(detallado.getCodigoBarras());
+            archivo.writeInt(detallado.getCantidadProd());
+            return true;
+        }
         return false;
     }
     

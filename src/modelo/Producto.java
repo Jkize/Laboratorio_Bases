@@ -11,7 +11,7 @@ package modelo;
  */
 public class Producto {
     
-    private int codigoBarras;
+    private long codigoBarras;
     private String nombreProducto;
     private double precio;
     private int cantidad;
@@ -19,11 +19,11 @@ public class Producto {
     public Producto() {
     }
 
-    public int getCodigoBarras() {
+    public long getCodigoBarras() {
         return codigoBarras;
     }
 
-    public void setCodigoBarras(int codigoBarras) {
+    public void setCodigoBarras(long codigoBarras) {
         this.codigoBarras = codigoBarras;
     }
 
@@ -50,7 +50,4 @@ public class Producto {
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
-
-    
-    
 }

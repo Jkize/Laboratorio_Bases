@@ -11,9 +11,27 @@ package modelo;
  */
 public class Detallado {
     
+    private String idVenta;
+    private long codigoBarras;
     private int cantidadProd;
 
     public Detallado() {
+    }
+
+    public long getCodigoBarras() {
+        return codigoBarras;
+    }
+
+    public void setCodigoBarras(long codigoBarras) {
+        this.codigoBarras = codigoBarras;
+    }
+    
+    public String getIdVenta() {
+        return idVenta;
+    }
+
+    public void setIdVenta(String idVenta) {
+        this.idVenta = idVenta;
     }
 
     public int getCantidadProd() {

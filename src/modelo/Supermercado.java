@@ -41,5 +41,4 @@ public class Supermercado {
         this.direccionSM = direccionSM;
     }
     
-    
 }
