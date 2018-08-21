@@ -26,17 +26,15 @@ public class DAO_Cliente {
     }
 
     /**
-     * Añadir, el archivo del cliente debe comenzar siempre en la última
-     * posición dentro del archivo en bytes.
-     *
+     * crea un nuevo cliente.     *
      * @param cliente.
-     * @return true si se añadio al archivo, de lo contrario false.
-     * @throws IOException
+     * @return True: añadido correctamente, False: cliente ya estaba registrado.
+     * @throws IOException .
      */
-    public boolean añadir(Cliente cliente) throws IOException {
+    public boolean crearCliente(Cliente cliente) throws IOException {
         //PRIMORDIAL LA LINEA DE ABAJO, INDICA QUE DEBE REGISTRAR AL FINAL DEL ARCHIVO CLIENTE.
         archivo.seek(archivo.length());
-        if (arbol.añadir(cliente.getIdPersona(), (int)archivo.length() )) {
+        if (arbol.añadir(cliente.getIdPersona(), (int) archivo.length())) {
             archivo.writeLong(cliente.getIdPersona());
             archivo.writeUTF(cliente.getNombre());
             archivo.writeUTF(cliente.getDireccion());
@@ -46,19 +44,19 @@ public class DAO_Cliente {
     }
 
     /**
-     * Método para obtener cliente.
+     * Obtener cliente.
      *
-     * @param id
-     * @return Cliente si se encontro con el ID, de lo contrario retornará una
-     * excepción ya que no se encontró.
-     * @throws IOException lanzará un error si no esta dentro de la posición.
+     * @param id idetificacion.
+     * @return Cliente: si se encontro con el ID, de lo contrario retornará una
+     * excepción.
+     * @throws IOException  .
      */
     public Cliente buscarCliente(long id) throws IOException {
         int pos = (int) arbol.getPosArchivo(id);
         Cliente cliente = new Cliente();
         archivo.seek(pos);
         cliente.setIdPersona(archivo.readLong());
-        cliente.setNombre(archivo.readUTF());        
+        cliente.setNombre(archivo.readUTF());
         cliente.setDireccion(archivo.readUTF());
         return cliente;
 
@@ -67,10 +65,9 @@ public class DAO_Cliente {
     /**
      * Actualizar datos del cliente.
      *
-     * @param cliente
-     * @return true si se actualizaron correctamente, false si no ya que no
-     * existe el ID.
-     * @throws IOException
+     * @param cliente.
+     * @return True si se actualizaron correctamente, False: no existe el ID.
+     * @throws IOException .
      */
     public boolean actualizarCliente(Cliente cliente) throws IOException {
 
@@ -86,6 +83,33 @@ public class DAO_Cliente {
             return false;
         }
     }
-    
-    
+
+    /**
+     * Elimina el cliente .
+     * @param id identificacion.
+     * @return true: elimanado correctamente, false: no se encontró.
+     * @throws IOException .
+     */
+    public boolean eliminarCliente(long id) throws IOException {
+
+        if (arbol.eliminar(id) && archivo.length() != 0) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Esta o no esta registrado.
+     * @param id identificacion.
+     * @return true, false. 
+     * @throws IOException  .
+     */
+    public boolean isCliente(long id) throws IOException {
+        int n = (int) arbol.getPosArchivo(id);
+        if (n != -1) {
+            return true;
+        }
+        return false;
+    }
+
 }

@@ -9,44 +9,37 @@ package modelo;
  *
  * @author Jhoan Saavedra
  */
-public class Persona {
+public class Caja {
 
-    protected long idPersona;
-    protected String nombre;
+    private String idCaja;
+    private int montoActual;
+    private String idSuperMercado;
 
-    public Persona() {
+    public Caja() {
     }
 
-    /**
-     *
-     * @return .
-     */
-    public long getIdPersona() {
-        return idPersona;
+    public String getIdCaja() {
+        return idCaja;
     }
 
-    /**
-     *
-     * @param idPersona .
-     */
-    public void setIdPersona(long idPersona) {
-        this.idPersona = idPersona;
+    public void setIdCaja(String idCaja) {
+        this.idCaja = conver(idCaja, 5);
     }
 
-    /**
-     *
-     * @return .
-     */
-    public String getNombre() {
-        return nombre;
+    public int getMontoActual() {
+        return montoActual;
     }
 
-    /**
-     *
-     * @param nombre .
-     */
-    public void setNombre(String nombre) {
-        this.nombre = conver(nombre, 40);
+    public void setMontoActual(int montoActual) {
+        this.montoActual = montoActual;
+    }
+
+    public String getIdSuperMercado() {
+        return idSuperMercado;
+    }
+
+    public void setIdSuperMercado(String idSuperMercado) {
+        this.idSuperMercado = conver(idCaja, 3);
     }
 
     /**
@@ -56,7 +49,7 @@ public class Persona {
      * @param n tamño.
      * @return El string con el tamaño específico.
      */
-    protected String conver(String string, int n) {
+    private String conver(String string, int n) {
         if (string.length() >= n) {
             return (String) string.subSequence(0, n);
         } else {

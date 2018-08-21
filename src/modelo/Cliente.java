@@ -7,21 +7,31 @@ package modelo;
 
 /**
  *
- * @author Jhoan Saavedra
+ * @author Jkize .
  */
-public class Cliente  extends Persona{
-    
+public class Cliente extends Persona {
+
     private String direccion;
 
     public Cliente() {
     }
 
+    /**
+     * getDireccion.
+     *
+     * @return direccion.
+     */
     public String getDireccion() {
         return direccion;
     }
 
+    /**
+     * setDireccion.
+     *
+     * @param direccion .
+     */
     public void setDireccion(String direccion) {
         this.direccion = conver(direccion, 25);
     }
-     
+
 }
