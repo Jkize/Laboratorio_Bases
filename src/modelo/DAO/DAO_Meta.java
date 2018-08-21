@@ -25,6 +25,13 @@ public class DAO_Meta {
         arbol = new Arbol_Archivo_IdLong("meta");
     }
     
+    /**
+     * Busca una meta especifica.
+     * 
+     * @param codigoB int.
+     * @return Un objeto tipo Meta.
+     * @throws IOException 
+     */
     public Meta buscarMeta(int codigoB) throws IOException{
         int pos = (int) arbol.getPosArchivo(codigoB);
         Meta meta = new Meta();
@@ -35,6 +42,14 @@ public class DAO_Meta {
         return meta;
     }
     
+    /**
+     * Crea una meta.
+     * 
+     * @param meta Meta.
+     * @return Boolean: True en caso de crear la meta exitosamente, en caso
+     * contrarío retornará false.
+     * @throws IOException 
+     */
     public boolean crearMeta(Meta meta) throws IOException{
         archivo.seek(archivo.length());
         if(arbol.añadir(meta.getCodigoBarras(), (int)archivo.length())){
@@ -46,10 +61,30 @@ public class DAO_Meta {
         return false;
     }
     
-    public boolean eliminarMeta(int codigoB, String fecha){
+    /**
+     * Elimina una meta ya creada.
+     * 
+     * @param codigoB int.
+     * @param fecha String.
+     * @return boolean: True en caso de eliminarlo exitosamente, false en caso
+     * contrarío.
+     * @throws IOException .
+     */
+    public boolean eliminarMeta(int codigoB, String fecha) throws IOException{
+        if (arbol.eliminar(codigoB) && archivo.length() != 0) {
+            return true;
+        }
         return false;
     }
     
+    /**
+     * Actualizar una meta.
+     * 
+     * @param meta Meta
+     * @return boolean: True en caso de actualizar correctamente, false en caso
+     * contrarío.
+     * @throws IOException 
+     */
     public boolean actualizarMeta(Meta meta) throws IOException{
         int pos = (int) arbol.getPosArchivo(meta.getCodigoBarras());
         archivo.seek(pos);

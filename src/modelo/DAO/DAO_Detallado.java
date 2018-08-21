@@ -25,6 +25,15 @@ public class DAO_Detallado {
         arbol = new Arbol_Archivo_IdString("detallado");
     }
     
+    /**
+     * Busca la información de un detallado.
+     *
+     *
+     * @param idVenta String.
+     * @return Detallado: Retorna un objeto tipo Detallado si lo encuenta con el
+     * idVenta, en caso contrarío retorna una excepción.
+     * @throws IOException .
+    */
     public Detallado buscarDetallado(String idVenta) throws IOException{
         int pos = (int) arbol.getPosArchivo(idVenta);
         Detallado detallado = new Detallado();
@@ -35,6 +44,14 @@ public class DAO_Detallado {
         return detallado;
     }
     
+    /**
+     * Obtener empleado.
+     *
+     * @param detallado Detallado.
+     * @return bollean: Retornará un true si se encontró con el objeto tipo 
+     * detallado, de lo contrario retornará un false.
+     * @throws IOException .
+     */
     public boolean crearDetallado(Detallado detallado) throws IOException{
         archivo.seek(archivo.length());
         if(arbol.añadir(detallado.getIdVenta(), (int)archivo.length())){
