@@ -26,6 +26,14 @@ public class Inventario {
         arbol = new Arbol_Archivo_IdLong("inventario");
     }
     
+    /**
+     * Buscar un producto.
+     * 
+     * @param codigoB int.
+     * @return Producto: Retorna un objeto tipo Producto en caso de encontrarlo,
+     * en caso contrario retorna un exception.
+     * @throws IOException 
+     */
     public Producto buscarProd(int codigoB) throws IOException{
         int pos = (int) arbol.getPosArchivo(codigoB);
         Producto prod = new Producto();
@@ -37,6 +45,14 @@ public class Inventario {
         return prod;
     }
     
+    /**
+     * Crea un producto nuevo.
+     * 
+     * @param prod Producto.
+     * @return boolean: True en caso de crearlo correctamente, false en caso
+     * contrarío.
+     * @throws IOException 
+     */
     public boolean crearProd(Producto prod) throws IOException{
         archivo.seek(archivo.length());
         if(arbol.añadir(prod.getCodigoBarras(), (int)archivo.length())){
@@ -49,10 +65,29 @@ public class Inventario {
         return false;
     }
     
-    public boolean eliminarProd(int codigoB){
+    /**
+     * Elimina un producto determinado.
+     * 
+     * @param codigoB int.
+     * @return boolean: True en caso de eliminarlo exitosamente, false en caso
+     * contrarío.
+     * @throws IOException 
+     */
+    public boolean eliminarProd(int codigoB)throws IOException{
+        if (arbol.eliminar(codigoB) && archivo.length() != 0) {
+            return true;
+        }
         return false;
     }
     
+    /**
+     * Actualiza un producto deseado.
+     * 
+     * @param prod Producto.
+     * @return boolean: True en caso de actualizarlo correctamente, false en
+     * caso contrarío.
+     * @throws IOException 
+     */
     public boolean actualizarProd(Producto prod) throws IOException{
         int pos = (int) arbol.getPosArchivo(prod.getCodigoBarras());
         archivo.seek(pos);
@@ -62,7 +97,14 @@ public class Inventario {
         archivo.writeInt(prod.getCantidad());
         return true;
     }
-
+    
+    /**
+     * Obtiene todo el inventario.
+     * 
+     * @return ArrayList<Producto>: La lista de todos los productos que se
+     * tienen registardos.
+     * @throws IOException 
+     */
     public ArrayList<Producto> getInventario() throws IOException {
         ArrayList<Producto> inventario = new ArrayList();
         while(true){
