@@ -53,7 +53,7 @@ public class DAO_Empleado {
      * @param id empleado.
      * @return empleado: si se encontro con el ID, de lo contrario retornará una
      * excepción.
-     * @throws IOException  .
+     * @throws IOException .
      */
     public Empleado buscarEmpleado(long id) throws IOException {
         int pos = (int) arbol.getPosArchivo(id);
@@ -106,11 +106,23 @@ public class DAO_Empleado {
         return false;
     }
 
-       /**
+    public boolean usuarioValido(long id, String contraseña) throws IOException {
+        int n = (int) arbol.getPosArchivo(id);
+        if (n != -1) {
+            archivo.seek(n + 50);
+            if (contraseña.equals(archivo.readUTF())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Esta o no esta registrado.
+     *
      * @param id identificacion.
-     * @return true, false. 
-     * @throws IOException  .
+     * @return true, false.
+     * @throws IOException .
      */
     public boolean isEmpleado(long id) throws IOException {
         int n = (int) arbol.getPosArchivo(id);
@@ -118,6 +130,24 @@ public class DAO_Empleado {
             return true;
         }
         return false;
+    }
+
+    public static void main(String[] args) throws FileNotFoundException, IOException {
+        DAO_Empleado daoem = new DAO_Empleado();
+        Empleado em = new Empleado();
+        em.setIdPersona(1234);
+        em.setNombre("jorge");
+        em.setContrasena("123a");
+        em.setCargo("evs");
+        em.setIdcaja("5fs");
+        Empleado sd = new Empleado();
+
+        sd.setContrasena("123a");
+        sd.setIdPersona(1234);
+        if (daoem.usuarioValido(sd.getIdPersona(), sd.getContrasena())) {
+            System.out.println("Exlent si esta");
+        }
+
     }
 
 }
