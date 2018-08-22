@@ -5,6 +5,8 @@
  */
 package modelo;
 
+import java.util.Date;
+
 /**
  *
  * @author PC02
@@ -12,7 +14,7 @@ package modelo;
 public class Meta {
     
     private long codigoBarras;
-    private String fechaMeta;
+    private Date fechaMeta;
     private int cantMeta;
 
     public Meta() {
@@ -26,11 +28,11 @@ public class Meta {
         this.codigoBarras = codigoBarras;
     }
 
-    public String getFechaMeta() {
+    public Date getFechaMeta() {
         return fechaMeta;
     }
 
-    public void setFechaMeta(String fechaMeta) {
+    public void setFechaMeta(Date fechaMeta) {
         this.fechaMeta = fechaMeta;
     }
 

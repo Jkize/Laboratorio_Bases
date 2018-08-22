@@ -12,7 +12,7 @@ package modelo;
 public class Caja {
 
     private String idCaja;
-    private int montoActual;
+    private double montoActual;
     private String idSuperMercado;
 
     public Caja() {
@@ -26,11 +26,11 @@ public class Caja {
         this.idCaja = conver(idCaja, 5);
     }
 
-    public int getMontoActual() {
+    public double getMontoActual() {
         return montoActual;
     }
 
-    public void setMontoActual(int montoActual) {
+    public void setMontoActual(double montoActual) {
         this.montoActual = montoActual;
     }
 

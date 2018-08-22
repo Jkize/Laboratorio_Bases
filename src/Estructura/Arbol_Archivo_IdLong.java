@@ -210,6 +210,12 @@ public class Arbol_Archivo_IdLong {
 
     }
 
+    /**
+     * Eliminar
+     * @param id .
+     * @return Eliminacion correcta :true .
+     * @throws IOException  .
+     */
     private boolean remove(long id) throws IOException {
         long t = arbol.readLong();
         if (t == id) {

@@ -17,7 +17,7 @@ public class Venta {
     private long idvendedor;
     private long idcliente;
     private Date date;
-    private int monto;
+    private double monto;
 
     public Venta() {
     }
@@ -54,12 +54,14 @@ public class Venta {
         this.date = date;
     }
 
-    public int getMonto() {
+    public double getMonto() {
         return monto;
     }
 
-    public void setMonto(int mondo_venta) {
-        this.monto = mondo_venta;
+    public void setMonto(double monto) {
+        this.monto = monto;
     }
+
+    
     
 }

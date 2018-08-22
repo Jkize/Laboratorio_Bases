@@ -9,6 +9,10 @@ import Estructura.Arbol_Archivo_IdLong;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import modelo.Meta;
 
 /**
@@ -19,10 +23,11 @@ public class DAO_Meta {
     
     private RandomAccessFile archivo;
     private Arbol_Archivo_IdLong arbol;
-    
+    private SimpleDateFormat sdf;
     public DAO_Meta() throws FileNotFoundException {
         archivo = new RandomAccessFile("meta", "rw");
         arbol = new Arbol_Archivo_IdLong("meta");
+        sdf = new SimpleDateFormat("dd-MM-yyyy");
     }
     
     /**
@@ -32,12 +37,12 @@ public class DAO_Meta {
      * @return Un objeto tipo Meta.
      * @throws IOException 
      */
-    public Meta buscarMeta(int codigoB) throws IOException{
+    public Meta buscarMeta(int codigoB) throws IOException, ParseException{
         int pos = (int) arbol.getPosArchivo(codigoB);
         Meta meta = new Meta();
         archivo.seek(pos);
         meta.setCodigoBarras(archivo.readLong());
-        meta.setFechaMeta(archivo.readUTF());
+        meta.setFechaMeta(sdf.parse(archivo.readUTF()));
         meta.setCantMeta(archivo.readInt());
         return meta;
     }
@@ -54,7 +59,7 @@ public class DAO_Meta {
         archivo.seek(archivo.length());
         if(arbol.añadir(meta.getCodigoBarras(), (int)archivo.length())){
             archivo.writeLong(meta.getCodigoBarras());
-            archivo.writeUTF(meta.getFechaMeta());
+            archivo.writeUTF(sdf.format(meta.getFechaMeta()));
             archivo.writeInt(meta.getCantMeta());
             return true;
         }
@@ -89,9 +94,13 @@ public class DAO_Meta {
         int pos = (int) arbol.getPosArchivo(meta.getCodigoBarras());
         archivo.seek(pos);
         archivo.writeLong(meta.getCodigoBarras());
-        archivo.writeUTF(meta.getFechaMeta());
+        archivo.writeUTF(sdf.format(meta.getFechaMeta()));
         archivo.writeInt(meta.getCantMeta());
         return true;
     }
     
+     public ArrayList<Meta> getMetas(Date mes){
+         return null;
+     }
+ 
 }

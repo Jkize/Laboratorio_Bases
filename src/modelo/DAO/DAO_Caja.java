@@ -10,6 +10,7 @@ import Estructura.Arbol_Archivo_IdString;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
 import modelo.Caja;
 
 /**
@@ -22,8 +23,8 @@ public class DAO_Caja {
     private Arbol_Archivo_IdString arbol;
 
     public DAO_Caja() throws FileNotFoundException {
-        archivo = new RandomAccessFile("cliente", "rw");
-        arbol = new Arbol_Archivo_IdString("cliente");
+        archivo = new RandomAccessFile("caja", "rw");
+        arbol = new Arbol_Archivo_IdString("caja");
     }
 
     /**
@@ -41,7 +42,7 @@ public class DAO_Caja {
         archivo.seek(archivo.length());
         if (arbol.añadir(caja.getIdCaja(), (int) archivo.length())) {
             archivo.writeUTF(caja.getIdCaja());
-            archivo.writeInt(caja.getMontoActual());
+            archivo.writeDouble(caja.getMontoActual());
             archivo.writeUTF(caja.getIdSuperMercado());
             return true;
         }
@@ -62,7 +63,7 @@ public class DAO_Caja {
         Caja caja = new Caja();
         archivo.seek(pos);
         caja.setIdCaja(archivo.readUTF());
-        caja.setMontoActual(archivo.readInt());
+        caja.setMontoActual(archivo.readDouble());
         caja.setIdSuperMercado(archivo.readUTF());
         return caja;
 
@@ -80,7 +81,7 @@ public class DAO_Caja {
             int pos = (int) arbol.getPosArchivo(caja.getIdCaja());
             archivo.seek(pos);
             archivo.writeUTF(caja.getIdCaja());
-            archivo.writeInt(caja.getMontoActual());
+            archivo.writeDouble(caja.getMontoActual());
             archivo.writeUTF(caja.getIdSuperMercado());
 
             return true;
@@ -97,7 +98,7 @@ public class DAO_Caja {
      * @return true: elimanado correctamente, false: no se encontró.
      * @throws IOException .
      */
-    public boolean eliminarEmpleado(String id) throws IOException {
+    public boolean eliminarCaja(String id) throws IOException {
         if (arbol.eliminar(id) && archivo.length() != 0) {
             return true;
         }
@@ -117,6 +118,28 @@ public class DAO_Caja {
             return true;
         }
         return false;
+    }
+
+    public ArrayList<Caja> getCajas() throws FileNotFoundException, IOException {
+        ArrayList<Caja> caja = new ArrayList<>();
+        RandomAccessFile archivoarbol = new RandomAccessFile("arbolcaja", "rw");
+        long n = archivoarbol.length() / (7 + 8 + 5);
+        archivoarbol.seek(0);
+        for (int i = 0; i < n; i++) {
+            archivoarbol.skipBytes(7 + 8);
+            int pos = archivoarbol.readInt();
+
+            if (pos != -1) {
+                archivo.seek(pos);
+                Caja cajita = new Caja();
+                cajita.setIdCaja(archivo.readUTF());
+                cajita.setMontoActual(archivo.readDouble());
+                cajita.setIdSuperMercado(archivo.readUTF());
+                caja.add(cajita);
+            }
+
+        }
+        return caja;
     }
 
 }

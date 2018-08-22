@@ -200,6 +200,12 @@ public class Arbol_Archivo_IdString {
         }
     }
 
+     /**
+     * Eliminar
+     * @param id .
+     * @return Eliminacion correcta :true .
+     * @throws IOException  .
+     */
     private boolean remove(String id) throws IOException {
         String t = arbol.readUTF();
         int compare = id.compareTo(t);

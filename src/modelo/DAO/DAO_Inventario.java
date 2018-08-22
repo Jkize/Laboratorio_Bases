@@ -16,12 +16,12 @@ import modelo.Producto;
  *
  * @author PC02
  */
-public class Inventario {
+public class DAO_Inventario {
     
     private RandomAccessFile archivo;
     private Arbol_Archivo_IdLong arbol;
     
-    public Inventario() throws FileNotFoundException {
+    public DAO_Inventario() throws FileNotFoundException {
         archivo = new RandomAccessFile("inventario", "rw");
         arbol = new Arbol_Archivo_IdLong("inventario");
     }
@@ -105,17 +105,26 @@ public class Inventario {
      * tienen registardos.
      * @throws IOException 
      */
-    public ArrayList<Producto> getInventario() throws IOException {
-        ArrayList<Producto> inventario = new ArrayList();
-        while(true){
-            Producto prod = new Producto();
-            prod.setCodigoBarras(archivo.readLong());
-            prod.setNombreProducto(archivo.readUTF());
-            prod.setPrecio(archivo.readDouble());
-            prod.setCantidad(archivo.readInt());
-            inventario.add(prod);
-            if(archivo.getFilePointer() == archivo.length())
-                break;
+  public ArrayList<Producto> getCajas() throws FileNotFoundException, IOException {
+        ArrayList<Producto> inventario = new ArrayList<>();
+        RandomAccessFile archivoarbol = new RandomAccessFile("arbol"+"inventario", "rw");
+        long n = archivoarbol.length() / (8 + 32 + 8+4);
+        archivoarbol.seek(0);
+        for (int i = 0; i < n; i++) {
+            archivoarbol.skipBytes(8 + 8);
+            int pos = archivoarbol.readInt();
+
+            if (pos != -1) {
+                archivo.seek(pos);
+                Producto producto = new Producto();
+                producto.setCodigoBarras(archivo.readLong());
+                producto.setNombreProducto(archivo.readUTF());
+                producto.setPrecio(archivo.readDouble());
+                producto.setCantidad(archivo.readInt());
+                inventario.add(producto);
+                
+            }
+
         }
         return inventario;
     }

@@ -46,7 +46,7 @@ public class DAO_Venta {
             archivo.writeLong(venta.getIdvendedor());
             archivo.writeLong(venta.getIdcliente());
             archivo.writeUTF(sdf.format(venta.getDate()));
-            archivo.writeInt(venta.getMonto());
+            archivo.writeDouble(venta.getMonto());
             return true;
         }
         return false;
@@ -68,7 +68,7 @@ public class DAO_Venta {
         venta.setIdvendedor(archivo.readLong());
         venta.setIdcliente(archivo.readLong());
         venta.setDate(sdf.parse(archivo.readUTF()));
-        venta.setMonto(archivo.readInt());
+        venta.setMonto(archivo.readDouble());
         return venta;
     }
 
@@ -88,7 +88,7 @@ public class DAO_Venta {
             archivo.writeLong(venta.getIdvendedor());
             archivo.writeLong(venta.getIdcliente());
             archivo.writeUTF(sdf.format(venta.getDate()));
-            archivo.writeInt(venta.getMonto());
+            archivo.writeDouble(venta.getMonto());
             return true;
         } catch (Exception e) {
             return false;
@@ -125,13 +125,6 @@ public class DAO_Venta {
         return false;
     }
 
-    //algunas pruebas con el atributo Date.
-    /*public static void main(String[] args) throws ParseException {
-        Date d;
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        d = sdf.parse("1-2-1998");
-        String h = sdf.format(d);
-        System.out.println(h);
-    }*/
+    
 
 }
