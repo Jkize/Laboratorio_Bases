@@ -31,7 +31,7 @@ public class Cliente extends Persona {
      * @param direccion .
      */
     public void setDireccion(String direccion) {
-        this.direccion = conver(direccion, 25);
+        this.direccion = direccion;
     }
 
 }

@@ -17,7 +17,7 @@ import modelo.Caja;
  *
  * @author Jhoan Saavedra
  */
-public class DAO_Caja {
+public class DAO_Caja implements DAO<Caja> {
 
     private RandomAccessFile archivo;
     private Arbol_Archivo_IdString arbol;
@@ -27,17 +27,8 @@ public class DAO_Caja {
         arbol = new Arbol_Archivo_IdString("caja");
     }
 
-    /**
-     * crea una nueva caja.
-     *
-     *
-     * @param caja.
-     * @return True: añadido correctamente, False: empleado ya estaba
-     * registrado.
-     * @throws IOException .
-     */
-    public boolean crearCaja(Caja caja) throws IOException {
-
+    @Override
+    public boolean crear(Caja caja) throws IOException {
         //PRIMORDIAL LA LINEA DE ABAJO, INDICA QUE DEBE REGISTRAR AL FINAL DEL ARCHIVO CAJA.
         archivo.seek(archivo.length());
         if (arbol.añadir(caja.getIdCaja(), (int) archivo.length())) {
@@ -47,36 +38,26 @@ public class DAO_Caja {
             return true;
         }
         return false;
-
     }
 
-    /**
-     * Obtener caja.
-     *
-     * @param id caja.
-     * @return caja: si se encontro con el ID, de lo contrario retornará una
-     * excepción.
-     * @throws IOException e.
-     */
-    public Caja buscarCaja(String id) throws IOException {
-        int pos = (int) arbol.getPosArchivo(id);
-        Caja caja = new Caja();
-        archivo.seek(pos);
-        caja.setIdCaja(archivo.readUTF());
-        caja.setMontoActual(archivo.readDouble());
-        caja.setIdSuperMercado(archivo.readUTF());
-        return caja;
+    @Override
+    public Caja buscar(Object id) throws IOException {
+        int pos = (int) arbol.getPosArchivo((String) id);
 
+        if (pos != -1) {
+            Caja caja = new Caja();
+            archivo.seek(pos);
+            caja.setIdCaja(archivo.readUTF());
+            caja.setMontoActual(archivo.readDouble());
+            caja.setIdSuperMercado(archivo.readUTF());
+            return caja;
+        } else {
+            return null;
+        }
     }
 
-    /**
-     * Actualizar datos de la caja.
-     *
-     * @param caja.
-     * @return True si se actualizaron correctamente, False: no existe el ID.
-     * @throws IOException .
-     */
-    public boolean actualizarCaja(Caja caja) {
+    @Override
+    public boolean actualizar(Caja caja) {
         try {
             int pos = (int) arbol.getPosArchivo(caja.getIdCaja());
             archivo.seek(pos);
@@ -88,33 +69,11 @@ public class DAO_Caja {
         } catch (Exception e) {
             return false;
         }
-
     }
 
-    /**
-     * Elimina la caja .
-     *
-     * @param id venta.
-     * @return true: elimanado correctamente, false: no se encontró.
-     * @throws IOException .
-     */
-    public boolean eliminarCaja(String id) throws IOException {
-        if (arbol.eliminar(id) && archivo.length() != 0) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Esta o no esta registrado.
-     *
-     * @param id identificacion.
-     * @return true, false.
-     * @throws IOException .
-     */
-    public boolean isCaja(String id) throws IOException {
-        int n = (int) arbol.getPosArchivo(id);
-        if (n != -1) {
+    @Override
+    public boolean eliminar(Object id) throws IOException {
+        if (arbol.eliminar((String) id) && archivo.length() != 0) {
             return true;
         }
         return false;
@@ -126,7 +85,7 @@ public class DAO_Caja {
         long n = archivoarbol.length() / (7 + 8 + 5);
         archivoarbol.seek(0);
         for (int i = 0; i < n; i++) {
-            archivoarbol.skipBytes(7 + 8);
+            archivoarbol.skipBytes(7 + 4 + 4);
             int pos = archivoarbol.readInt();
 
             if (pos != -1) {
@@ -141,5 +100,6 @@ public class DAO_Caja {
         }
         return caja;
     }
+     
 
 }

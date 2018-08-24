@@ -15,15 +15,23 @@ public class Caja {
     private double montoActual;
     private String idSuperMercado;
 
+    public Caja(String idCaja, double montoActual, String idSuperMercado) {
+        this.idCaja = idCaja;
+        this.montoActual = montoActual;
+        this.idSuperMercado = idSuperMercado;
+    }
+
     public Caja() {
     }
+    
+    
 
     public String getIdCaja() {
         return idCaja;
     }
 
     public void setIdCaja(String idCaja) {
-        this.idCaja = conver(idCaja, 5);
+        this.idCaja = idCaja;
     }
 
     public double getMontoActual() {
@@ -39,26 +47,9 @@ public class Caja {
     }
 
     public void setIdSuperMercado(String idSuperMercado) {
-        this.idSuperMercado = conver(idCaja, 3);
+        this.idSuperMercado = idSuperMercado;
     }
 
-    /**
-     * Devuelve un tamaño predeterminado.
-     *
-     * @param string.
-     * @param n tamño.
-     * @return El string con el tamaño específico.
-     */
-    private String conver(String string, int n) {
-        if (string.length() >= n) {
-            return (String) string.subSequence(0, n);
-        } else {
-            String vas = "";
-            for (int i = 0; i < n - string.length(); i++) {
-                vas += " ";
-            }
-            return string + vas;
-        }
-    }
-
+    
+    
 }

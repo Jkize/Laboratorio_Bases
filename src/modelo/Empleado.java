@@ -9,7 +9,8 @@ package modelo;
  *
  * @author Jhoan Saavedra
  */
-public class Empleado extends Persona{
+public class Empleado extends Persona {
+
     private String contrasena;
     private String cargo;
     private String idcaja;
@@ -19,24 +20,24 @@ public class Empleado extends Persona{
 
     /**
      * getContrasena()
+     *
      * @return contaseña.
      */
     public String getContrasena() {
         return contrasena;
     }
-    
+
     /**
-     * 
+     *
      * @param contrasena .
      */
-
     public void setContrasena(String contrasena) {
-         this.contrasena=conver(contrasena, 7);
-     
+        this.contrasena = contrasena;
+
     }
 
     /**
-     * 
+     *
      * @return .
      */
     public String getCargo() {
@@ -44,15 +45,15 @@ public class Empleado extends Persona{
     }
 
     /**
-     * 
+     *
      * @param cargo .
      */
     public void setCargo(String cargo) {
-        this.cargo = conver(cargo, 2);
+        this.cargo = cargo;
     }
 
     /**
-     * 
+     *
      * @return .
      */
     public String getIdcaja() {
@@ -60,12 +61,11 @@ public class Empleado extends Persona{
     }
 
     /**
-     * 
-     * @param idcaja  .
+     *
+     * @param idcaja .
      */
     public void setIdcaja(String idcaja) {
-        this.idcaja =conver(idcaja,5);
+        this.idcaja = idcaja;
     }
-    
-    
+
 }
