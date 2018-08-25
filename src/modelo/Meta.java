@@ -12,9 +12,9 @@ import java.util.Date;
  * @author PC02
  */
 public class Meta {
-    
+
     private long codigoBarras;
-    private Date fechaMeta;
+    private String fechaMeta;
     private int cantMeta;
 
     public Meta() {
@@ -28,11 +28,11 @@ public class Meta {
         this.codigoBarras = codigoBarras;
     }
 
-    public Date getFechaMeta() {
+    public String getFechaMeta() {
         return fechaMeta;
     }
 
-    public void setFechaMeta(Date fechaMeta) {
+    public void setFechaMeta(String fechaMeta) {
         this.fechaMeta = fechaMeta;
     }
 
@@ -43,5 +43,5 @@ public class Meta {
     public void setCantMeta(int cantMeta) {
         this.cantMeta = cantMeta;
     }
-        
+
 }

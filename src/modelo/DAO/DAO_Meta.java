@@ -9,8 +9,6 @@ import Estructura.Arbol_Archivo_IdLong;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import modelo.Meta;
@@ -19,88 +17,90 @@ import modelo.Meta;
  *
  * @author PC02
  */
-public class DAO_Meta {
-    
+public class DAO_Meta implements DAO<Meta> {
+
     private RandomAccessFile archivo;
     private Arbol_Archivo_IdLong arbol;
-    private SimpleDateFormat sdf;
+
     public DAO_Meta() throws FileNotFoundException {
         archivo = new RandomAccessFile("meta", "rw");
         arbol = new Arbol_Archivo_IdLong("meta");
-        sdf = new SimpleDateFormat("dd-MM-yyyy");
     }
-    
-    /**
-     * Busca una meta especifica.
-     * 
-     * @param codigoB int.
-     * @return Un objeto tipo Meta.
-     * @throws IOException 
-     */
-    public Meta buscarMeta(int codigoB) throws IOException, ParseException{
-        int pos = (int) arbol.getPosArchivo(codigoB);
-        Meta meta = new Meta();
-        archivo.seek(pos);
-        meta.setCodigoBarras(archivo.readLong());
-        meta.setFechaMeta(sdf.parse(archivo.readUTF()));
-        meta.setCantMeta(archivo.readInt());
-        return meta;
-    }
-    
-    /**
-     * Crea una meta.
-     * 
-     * @param meta Meta.
-     * @return Boolean: True en caso de crear la meta exitosamente, en caso
-     * contrarío retornará false.
-     * @throws IOException 
-     */
-    public boolean crearMeta(Meta meta) throws IOException{
+
+    @Override
+    public boolean crear(Meta meta) throws FileNotFoundException, IOException {
+
         archivo.seek(archivo.length());
-        if(arbol.añadir(meta.getCodigoBarras(), (int)archivo.length())){
+        if (arbol.añadir(meta.getCodigoBarras(), (int) archivo.length())) {
             archivo.writeLong(meta.getCodigoBarras());
-            archivo.writeUTF(sdf.format(meta.getFechaMeta()));
+            archivo.writeUTF(meta.getFechaMeta());
             archivo.writeInt(meta.getCantMeta());
             return true;
         }
         return false;
+
     }
-    
-    /**
-     * Elimina una meta ya creada.
-     * 
-     * @param codigoB int.
-     * @param fecha String.
-     * @return boolean: True en caso de eliminarlo exitosamente, false en caso
-     * contrarío.
-     * @throws IOException .
-     */
-    public boolean eliminarMeta(int codigoB, String fecha) throws IOException{
-        if (arbol.eliminar(codigoB) && archivo.length() != 0) {
+
+    @Override
+    public Meta buscar(Object codigoB) throws FileNotFoundException, IOException {
+        int pos = (int) arbol.getPosArchivo((long) codigoB);
+
+        if (pos != -1) {
+            Meta meta = new Meta();
+            archivo.seek(pos);
+            meta.setCodigoBarras(archivo.readLong());
+            meta.setFechaMeta(archivo.readUTF());
+            meta.setCantMeta(archivo.readInt());
+            return meta;
+        }
+        return null;
+
+    }
+
+    @Override
+    public boolean actualizar(Meta meta) throws FileNotFoundException, IOException {
+        int pos = (int) arbol.getPosArchivo(meta.getCodigoBarras());
+        if (pos != -1) {
+            archivo.seek(pos);
+            archivo.writeLong(meta.getCodigoBarras());
+            archivo.writeUTF(meta.getFechaMeta());
+            archivo.writeInt(meta.getCantMeta());
+            return true;
+        }
+        return false;
+
+    }
+
+    @Override
+    public boolean eliminar(Object codigoB) throws FileNotFoundException, IOException {
+        if (archivo.length() != 0 && arbol.eliminar((long) codigoB)) {
             return true;
         }
         return false;
     }
-    
-    /**
-     * Actualizar una meta.
-     * 
-     * @param meta Meta
-     * @return boolean: True en caso de actualizar correctamente, false en caso
-     * contrarío.
-     * @throws IOException 
-     */
-    public boolean actualizarMeta(Meta meta) throws IOException{
-        int pos = (int) arbol.getPosArchivo(meta.getCodigoBarras());
-        archivo.seek(pos);
-        archivo.writeLong(meta.getCodigoBarras());
-        archivo.writeUTF(sdf.format(meta.getFechaMeta()));
-        archivo.writeInt(meta.getCantMeta());
-        return true;
+
+    public ArrayList<Meta> getMetas(String mes_año) throws FileNotFoundException, IOException {
+        ArrayList<Meta> metas = new ArrayList<>();
+        RandomAccessFile archivoarbol = new RandomAccessFile("arbolmeta", "rw");
+        int n = (int) (archivoarbol.length() / (8 + 4 + 4 + 4));
+        archivoarbol.seek(0);
+        for (int i = 0; i < n; i++) {
+            archivoarbol.skipBytes(8 + 4 + 4);
+            int pos = archivoarbol.readInt();
+
+            if (pos != -1) {
+                archivo.seek(pos);
+                Meta meta = new Meta();
+                meta.setCodigoBarras(archivo.readLong());
+                meta.setCantMeta(archivo.readInt());
+                meta.setFechaMeta(archivo.readUTF());
+                if (mes_año.equals(meta.getFechaMeta())) {
+                    metas.add(meta);
+                }
+            }
+        }
+
+        return metas;
     }
-    
-     public ArrayList<Meta> getMetas(Date mes){
-         return null;
-     }
- 
+
 }

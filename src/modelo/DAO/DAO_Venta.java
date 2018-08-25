@@ -108,18 +108,19 @@ public class DAO_Venta implements DAO<Venta> {
         for (int i = 0; i < n; i++) {
             archivoarbol.skipBytes(7 + 4 + 4);
             int pos = archivoarbol.readInt();
-            archivo.seek(pos);
-            Venta venta = new Venta();
-            venta.setIdVenta(archivo.readUTF());
-            venta.setIdvendedor(archivo.readLong());
-            venta.setIdcliente(archivo.readLong());
-            String fecha2 = archivo.readUTF();
-            venta.setDate(sdf.parse(fecha2));
-            venta.setMonto(archivo.readDouble());
+            if (pos != -1) {
+                archivo.seek(pos);
+                Venta venta = new Venta();
+                venta.setIdVenta(archivo.readUTF());
+                venta.setIdvendedor(archivo.readLong());
+                venta.setIdcliente(archivo.readLong());
+                String fecha2 = archivo.readUTF();
+                venta.setDate(sdf.parse(fecha2));
+                venta.setMonto(archivo.readDouble());
 
-            if (venta.getIdvendedor() == id_empleado && fecha.equals(fecha2.substring(3))) {
-                ventas.add(venta);
-
+                if (venta.getIdvendedor() == id_empleado && fecha.equals(fecha2.substring(3))) {
+                    ventas.add(venta);
+                }
             }
 
         }
