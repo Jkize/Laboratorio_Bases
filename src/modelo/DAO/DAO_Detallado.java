@@ -88,7 +88,7 @@ public class DAO_Detallado {
             int cantidad = archivo.readInt();
             if (codb == codB) {
                 Venta venta = new Venta();
-                venta = daoventa.buscarVenta(id);
+                venta = daoventa.buscar(id);
                 if (venta.getDate().equals(fecha)) {
                     Detallado detallado = new Detallado();
                     detallado.setIdVenta(id);

@@ -73,7 +73,7 @@ public class DAO_Caja implements DAO<Caja> {
 
     @Override
     public boolean eliminar(Object id) throws IOException {
-        if (arbol.eliminar((String) id) && archivo.length() != 0) {
+        if (archivo.length() != 0 && arbol.eliminar((String) id)) {
             return true;
         }
         return false;
@@ -82,7 +82,7 @@ public class DAO_Caja implements DAO<Caja> {
     public ArrayList<Caja> getCajas() throws FileNotFoundException, IOException {
         ArrayList<Caja> caja = new ArrayList<>();
         RandomAccessFile archivoarbol = new RandomAccessFile("arbolcaja", "rw");
-        long n = archivoarbol.length() / (7 + 8 + 5);
+        long n = archivoarbol.length() / (7 + 4 + 4 + 4);
         archivoarbol.seek(0);
         for (int i = 0; i < n; i++) {
             archivoarbol.skipBytes(7 + 4 + 4);
@@ -100,6 +100,5 @@ public class DAO_Caja implements DAO<Caja> {
         }
         return caja;
     }
-     
 
 }
