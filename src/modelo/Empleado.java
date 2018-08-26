@@ -14,8 +14,16 @@ public class Empleado extends Persona {
     private String contrasena;
     private String cargo;
     private String idcaja;
+    private String idSupermercado;
 
     public Empleado() {
+    }
+
+    public Empleado(String contrasena, String cargo, String idcaja, String idSupermercado) {
+        this.contrasena = contrasena;
+        this.cargo = cargo;
+        this.idcaja = idcaja;
+        this.idSupermercado = idSupermercado;
     }
 
     /**
@@ -66,6 +74,14 @@ public class Empleado extends Persona {
      */
     public void setIdcaja(String idcaja) {
         this.idcaja = idcaja;
+    }
+
+    public String getIdSupermercado() {
+        return idSupermercado;
+    }
+
+    public void setIdSupermercado(String idSupermercado) {
+        this.idSupermercado = idSupermercado;
     }
 
 }

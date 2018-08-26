@@ -17,6 +17,11 @@ public class Persona {
     public Persona() {
     }
 
+    public Persona(long idPersona, String nombre) {
+        this.idPersona = idPersona;
+        this.nombre = nombre;
+    }
+
     /**
      *
      * @return .

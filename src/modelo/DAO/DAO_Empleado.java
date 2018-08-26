@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import modelo.Empleado;
+import modelo.Persona;
 
 /**
  *
@@ -25,6 +26,17 @@ public class DAO_Empleado implements DAO<Empleado> {
         arbol = new Arbol_Archivo_IdLong("empleado");
     }
 
+    public static void main(String[] args) throws FileNotFoundException, IOException {
+
+        DAO_Empleado as = new DAO_Empleado();
+       
+        Empleado emss=as.buscar((long)1010); 
+       
+        
+        System.out.println(emss.getIdPersona()+" "+emss.getContrasena());
+
+    }
+
     @Override
     public boolean crear(Empleado empleado) throws FileNotFoundException, IOException {
         archivo.seek(archivo.length());
@@ -33,6 +45,7 @@ public class DAO_Empleado implements DAO<Empleado> {
             archivo.writeUTF(empleado.getContrasena());
             archivo.writeUTF(empleado.getCargo());
             archivo.writeUTF(empleado.getIdcaja());
+            archivo.writeUTF(empleado.getIdSupermercado());
             return true;
         }
         return false;
@@ -40,7 +53,7 @@ public class DAO_Empleado implements DAO<Empleado> {
 
     @Override
     public Empleado buscar(Object id) throws FileNotFoundException, IOException {
-        int pos = (int) arbol.getPosArchivo((long) id);
+            int pos = (int) arbol.getPosArchivo((long)id);
         if (pos != -1) {
             Empleado empleado = new Empleado();
             archivo.seek(pos);
@@ -48,6 +61,7 @@ public class DAO_Empleado implements DAO<Empleado> {
             empleado.setContrasena(archivo.readUTF());
             empleado.setCargo(archivo.readUTF());
             empleado.setIdcaja(archivo.readUTF());
+            empleado.setIdSupermercado(archivo.readUTF());
             return empleado;
         }
         return null;
@@ -64,6 +78,7 @@ public class DAO_Empleado implements DAO<Empleado> {
             archivo.writeUTF(empleado.getContrasena());
             archivo.writeUTF(empleado.getCargo());
             archivo.writeUTF(empleado.getIdcaja());
+            archivo.writeUTF(empleado.getIdSupermercado());
 
             return true;
         }
@@ -80,15 +95,20 @@ public class DAO_Empleado implements DAO<Empleado> {
         return false;
     }
 
-    public boolean usuarioValido(long id, String contraseña) throws IOException {
+    public int usuarioValido(long id, String contraseña) throws IOException {
         int n = (int) arbol.getPosArchivo(id);
         if (n != -1) {
             archivo.seek(n + 8);
+
             if (contraseña.equals(archivo.readUTF())) {
-                return true;
+                if (archivo.readUTF().equals("AD"));
+                return 1;
+            } else {
+                return 2;
             }
+
         }
-        return false;
+        return 0;
     }
 
     public boolean existe(long id) throws IOException {

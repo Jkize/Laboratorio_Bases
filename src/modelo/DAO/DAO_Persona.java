@@ -44,6 +44,7 @@ public class DAO_Persona implements DAO<Persona> {
             archivo.seek(pos);
             Persona persona = new Persona();
             persona.setIdPersona(archivo.readLong());
+            String ns=archivo.readUTF(); 
             persona.setNombre(archivo.readUTF());
             return persona;
         }
